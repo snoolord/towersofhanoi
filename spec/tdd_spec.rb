@@ -13,12 +13,7 @@ describe Array do
     end
 
     it 'does not call the Array#uniq method' do
-      expect(a).not_to receive(:uniq)
-      a.remove_dups
-    end
-
-    it 'does not call the Array#sort method' do
-      expect(a).not_to receive(:sort)
+      expect_any_instance_of(Array).not_to receive(:uniq)
       a.remove_dups
     end
   end
@@ -71,6 +66,7 @@ end
 describe Hanoi do
   subject(:game) { Hanoi.new }
   # let(:win_game) { double("win_game", :towers => [[], [], [3, 2, 1]])}
+  let(:input) { double("input", :coord => 's,2')}
   describe '#initialize' do
     it "game initializes towers correctly" do
       expect(game.towers).to eq([[3, 2, 1], [], []])
@@ -84,9 +80,38 @@ describe Hanoi do
     end
   end
 
-  describe '#move' do
-    it 'prompts user for input' do
-      expect(game.move).to receive(:gets)
+  describe '#take_move' do
+
+  end
+
+  describe '#parse_input' do
+    it 'raises an error for invalid character input' do
+      expect { game.parse_input(input.coord) }.to raise_error("Character input not accepted!")
+    end
+
+    it 'raises an error if no comma is provided' do
+      expect {game.parse_input("00")}.to raise_error
+    end
+
+    it 'raises an error if range if outside of towers' do
+      expect {game.parse_input("5, 5")}.to raise_error
+    end
+
+    it 'raises an error if only one tower is passed in' do
+      expect { game.parse_input(",2")}.to raise_error
+    end
+
+  end
+
+  describe '#move_piece' do
+    before {game.towers = [[3, 2], [1], []]}
+
+    
+    it 'raises an error if the first tower is empty' do
+      expect { game.move_piece( [2, 1] ) }.to raise_error
+    end
+    it 'raises an error if the second tower has a smaller value than the incoming piece' do
+      expect { game.move_piece( [0, 1] )}.to raise_error
     end
   end
 

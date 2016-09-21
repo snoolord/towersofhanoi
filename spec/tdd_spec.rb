@@ -13,12 +13,14 @@ describe Array do
     end
 
     it 'does not call the Array#uniq method' do
-      expect(a.remove_dups).not_to receive(:uniq)
+      expect(a).not_to receive(:uniq)
+      a.remove_dups
     end
 
-    # it 'does not call the Array#sort method' do
-    #   expect(a.remove_dups).not_to receive(:sort)
-    # end
+    it 'does not call the Array#sort method' do
+      expect(a).not_to receive(:sort)
+      a.remove_dups
+    end
   end
 
   describe "#two_sum" do
@@ -64,4 +66,28 @@ describe Array do
       expect(stock_prices.stock_picker).to eq([[3,5]])
     end
   end
+end
+
+describe Hanoi do
+  subject(:game) { Hanoi.new }
+  # let(:win_game) { double("win_game", :towers => [[], [], [3, 2, 1]])}
+  describe '#initialize' do
+    it "game initializes towers correctly" do
+      expect(game.towers).to eq([[3, 2, 1], [], []])
+    end
+  end
+
+  describe '#won?' do
+    it 'correctly determines when the game is won' do
+      game.towers = [[], [], [3, 2, 1]]
+      expect(game.won?).to eq(true)
+    end
+  end
+
+  describe '#move' do
+    it 'prompts user for input' do
+      expect(game.move).to receive(:gets)
+    end
+  end
+
 end

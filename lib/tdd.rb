@@ -45,3 +45,20 @@ class Array
     [best_days]
   end
 end
+
+class Hanoi
+  attr_accessor :towers
+
+  def initialize
+    @towers = [[3, 2, 1], [], []]
+  end
+
+  def won?
+    self.towers == [[], [], [3, 2, 1]]
+  end
+
+  def move
+    input = gets
+    input
+  end
+end
